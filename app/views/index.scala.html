@@ -1,0 +1,18 @@
+@(sheetForm: Form[SheetDescription])
+
+@import helper._
+
+@main("Welcome to Play") {
+
+	@helper.form(action = routes.Application.upload, 'enctype -> "multipart/form-data") {
+		
+		@inputFile(sheetForm("database"))
+		@inputFile(sheetForm("input"))
+		@inputText(sheetForm("sheetNumberDb"))
+		@inputText(sheetForm("sheetNumberInput"))
+		<p>
+			<input type="submit">
+		</p>
+	}
+}
+
