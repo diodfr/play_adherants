@@ -21,5 +21,5 @@ RUN (cd /opt && git clone https://github.com/diodfr/play_adherants.git)
 WORKDIR /opt/play_adherants
 EXPOSE 9000 
 
-CMD ["/bin/bash", "play", "compile"]
+CMD ["play", "clean", "stage"]
 
