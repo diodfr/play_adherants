@@ -2,10 +2,8 @@
 #
 # VERSION               0.0.1
 
-FROM diodfr/playframework2-dev
+FROM diodfr/play-adherants
 MAINTAINER Didier BROCA <didier.broca@libertysurf.fr>
-
-CMD update-java-alternatives -s java-1.7.0-openjdk-amd64
 
 RUN mkdir /opt/hashFind
 RUN (cd /opt/ && git clone https://github.com/diodfr/hashFind.git && cd /opt/hashFind && mvn install && cd /opt && rm -f /opt/hasFind)
