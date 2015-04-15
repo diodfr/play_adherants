@@ -15,4 +15,4 @@ RUN (cd /opt/play_adherants/ && play stage)
 WORKDIR /opt/play_adherants
 EXPOSE 9000
 
-ENTRYPOINT /opt/play_adherants/target/universal/stage/bin/play_adherants
+#ENTRYPOINT /opt/play_adherants/target/universal/stage/bin/play_adherants
