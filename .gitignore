@@ -16,3 +16,5 @@ dist
 /.target
 /bin
 .cache
+.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+/.metadata/
