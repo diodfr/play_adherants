@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import play.data.validation.Constraints.Required;
 
 public class SheetDescription {
@@ -7,4 +9,12 @@ public class SheetDescription {
 	public int sheetNumberDb;
 	@Required
 	public int sheetNumberInput;
+	
+	public int minLevelForComment;
+	
+	public List<FormattingRule> rules;
+	
+	public SheetDescription() {
+		minLevelForComment = 30;
+	}
 }

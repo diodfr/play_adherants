@@ -10,5 +10,6 @@ public class LevelStyle4Adherant extends LevelStyleProvider {
 		addLevel(60, HSSFColor.LIGHT_ORANGE.index);
 		addLevel(75, HSSFColor.SKY_BLUE.index);
 		addLevel(100, HSSFColor.GREEN.index);
+		setMinScoreForComments(30);
 	}
 }

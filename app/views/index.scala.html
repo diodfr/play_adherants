@@ -2,6 +2,8 @@
 
 @import helper._
 
+
+
 @main("Welcome to Play") {
 
 	@helper.form(action = routes.Application.upload, 'enctype -> "multipart/form-data") {
@@ -10,6 +12,21 @@
 		@inputFile(sheetForm("input"))
 		@inputText(sheetForm("sheetNumberDb"))
 		@inputText(sheetForm("sheetNumberInput"))
+
+		<table>
+			<tr>
+				<th>Level</th>
+				<th>Color</th> 
+			</tr>
+		@helper.repeat(sheetForm("rules"), min = 4) { level =>
+			<tr>
+				<td>
+				@helper.inputText(level("level"), '_label -> null)</td>
+				<td>
+				@helper.select(level("color"), options = options(CellColor.options), '_default -> "--- Choose a color ---", '_label -> null)</td>
+			</tr>
+		}
+		</table>
 		<p>
 			<input type="submit">
 		</p>
