@@ -18,9 +18,11 @@ import fr.diod.searchAdherants.excel.style.provider.StyleProvider;
 
 public class Application extends Controller {
 
-	final static Form<SheetDescription> sheetForm = play.data.Form.form(SheetDescription.class);
+	static Form<SheetDescription> sheetForm = play.data.Form.form(SheetDescription.class);
 
 	public static Result index() {
+		Logger.info("Index fills form");
+		sheetForm = sheetForm.fill(new SheetDescription(true));
 		return ok(index.render(sheetForm));
 	}
 
@@ -34,11 +36,13 @@ public class Application extends Controller {
 			FilePart input = body.getFile("input");
 			File dbFile = database.getFile();
 			File inputFile = input.getFile();
-			Logger.info("ICI CA MARCHE");
 
+			Logger.debug("Before Search >>>");
 			StyleProvider provider = createProvider(sheetDesc);
+			
 			InputStream in = ExcelSearch.computeResult(dbFile, sheetDesc.sheetNumberDb, inputFile, sheetDesc.sheetNumberInput, provider);
-			Logger.info("ICI CA MARCHE PLUS");
+			Logger.debug("<<< After search");
+			
 			return ok(in).as("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		} else {
 			flash("error", "Missing file || Form error");
@@ -47,12 +51,13 @@ public class Application extends Controller {
 	}
 
 	private static StyleProvider createProvider(SheetDescription sheetDesc) {
+		Logger.info("LevelStyleProvider creation");
 		LevelStyleProvider levelStyleProvider = new LevelStyleProvider();
-		
+		Logger.info("min level = {}", sheetDesc.minLevelForComment);
 		levelStyleProvider.setMinScoreForComments(sheetDesc.minLevelForComment);
 		
 		for (FormattingRule rule : sheetDesc.rules) {
-			Logger.debug("{} => color {}", rule.level, (short) rule.color);
+			Logger.info("{} => color {}", rule.level, (short) rule.color);
 			levelStyleProvider.addLevel(rule.level, (short) rule.color);
 		}
 		return levelStyleProvider;
