@@ -20,7 +20,7 @@ public class SheetDescription {
 	public SheetDescription() {
 	}
 
-	public SheetDescription(boolean toto) {
+	public SheetDescription(boolean init) {
 		minLevelForComment = 30;
 		
 		rules = new ArrayList<FormattingRule>();

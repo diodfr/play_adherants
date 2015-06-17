@@ -6,5 +6,8 @@
 GET     /                           controllers.Application.index()
 POST	/upload						controllers.Application.upload()
 
+GET     /word                           controllers.Application.indexWord()
+POST	/uploadWord						controllers.Application.uploadWord()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

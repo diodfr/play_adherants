@@ -3,8 +3,10 @@ package controllers;
 import java.io.File;
 import java.io.InputStream;
 
+import buisness.rules.cell.style.LevelStyle4Adherant;
 import models.FormattingRule;
 import models.SheetDescription;
+import models.WordDescription;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
@@ -12,13 +14,16 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import views.html.index;
+import views.html.indexWord;
 import fr.diod.searchAdherants.excel.ExcelSearch;
+import fr.diod.searchAdherants.excel.WordSearch;
 import fr.diod.searchAdherants.excel.style.provider.LevelStyleProvider;
 import fr.diod.searchAdherants.excel.style.provider.StyleProvider;
 
 public class Application extends Controller {
 
 	static Form<SheetDescription> sheetForm = play.data.Form.form(SheetDescription.class);
+	static Form<WordDescription> wordForm = play.data.Form.form(WordDescription.class);
 
 	public static Result index() {
 		Logger.info("Index fills form");
@@ -26,6 +31,12 @@ public class Application extends Controller {
 		return ok(index.render(sheetForm));
 	}
 
+	public static Result indexWord() {
+		Logger.info("Index fills form");
+		wordForm = wordForm.fill(new WordDescription());
+		return ok(indexWord.render(wordForm));
+	}
+	
 	//	@BodyParser.Of(BodyParser.MultipartFormData.class)
 	public static Result upload() {
 		Form<SheetDescription> formBinded = sheetForm.bindFromRequest();
@@ -62,4 +73,27 @@ public class Application extends Controller {
 		}
 		return levelStyleProvider;
 	}
+	
+	public static Result uploadWord() {
+		Form<WordDescription> formBinded = wordForm.bindFromRequest();
+		if (!formBinded.hasErrors()) {
+			WordDescription wordDesc = formBinded.get();
+			MultipartFormData body = request().body().asMultipartFormData();
+			FilePart database = body.getFile("database");
+			FilePart input = body.getFile("input");
+			File dbFile = database.getFile();
+			File inputFile = input.getFile();
+
+			Logger.debug("Before Search >>>");
+			
+			InputStream in = WordSearch.computeResult(dbFile, wordDesc.sheetNumberDb, inputFile, wordDesc.separators.toArray(new String[0]), new LevelStyle4Adherant());
+			Logger.debug("<<< After search");
+			
+			return ok(in).as("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		} else {
+			flash("error", "Missing file || Form error");
+			return redirect(routes.Application.index());    
+		}
+	}
+
 }

@@ -1,0 +1,29 @@
+@(wordForm: Form[WordDescription])
+
+@import helper._
+
+
+
+@main("Welcome to Play") {
+
+	@helper.form(action = routes.Application.uploadWord, 'enctype -> "multipart/form-data") {
+		
+		@inputFile(wordForm("database"))
+		@inputFile(wordForm("input"))
+		@inputText(wordForm("sheetNumberDb"))
+		<table>
+			<tr>
+				<th>Separator</th> 
+			</tr>
+		@helper.repeat(wordForm("separators"), min = 2) { level =>
+			<tr>
+				<td>@helper.inputText(level, '_label -> null)</td>
+			</tr>
+		}
+		</table>
+		<p>
+			<input type="submit">
+		</p>
+	}
+}
+
